@@ -30,23 +30,20 @@ export default class
 
 	get center()
 	{
-		this._center.x = this.canvas.width / 2;
-		this._center.y = this.canvas.height / 2;
-
-		return this._center;
+		return new Point(this.canvas.width / 2, this.canvas.height / 2);
 	}
 
-	constructor(width, height, color, parent = document.body, fallback = 'Not supported')
+	constructor(width, height, parent, fallback = 'Not supported')
 	{
 		// create canvas
 		this.canvas = document.createElement('canvas');
 		this.canvas.width = width;
 		this.canvas.height = height;
-		this.canvas.style.backgroundColor = color.rgba;
 		this.canvas.innerHTML = fallback;
 
 		// append to dom
-		parent.appendChild(this.canvas);
+		if (parent instanceof Element)
+			parent.appendChild(this.canvas);
 
 		// get 2d context
 		this.ctx = this.canvas.getContext('2d');
@@ -84,12 +81,16 @@ export default class
 	pause()
 	{
 		this.paused = true;
+
+		return this;
 	}
 
 	resume()
 	{
 		this.paused = false;
 		this.start();
+
+		return this;
 	}
 
 	_loop(frameTime, initial = false)
