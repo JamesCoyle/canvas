@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Particle Engine</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<style media="screen">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				background: hsl(0, 0%, 95%);
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			import Canvas2D from './js/canvas2d.js';
+
+			import Color from './js/types/color.js';
+			import Point from './js/types/point.js';
+			import Vector from './js/types/vector.js';
+			import Line from './js/types/line.js';
+			import Transform from './js/types/transform.js';
+
+			import {LineEmitter} from './js/physics/emitter.js';
+			import Particle from './js/physics/particle.js';
+
+			import Rectangle from './js/drawables/rectangle.js';
+			import Image from './js/drawables/image.js';
+
+			let width = document.documentElement.clientWidth,
+				height = document.documentElement.clientHeight;
+
+			let canvas = new Canvas2D(width, height, new Color('midnightblue')),
+				ctx = canvas.ctx;
+
+			window.canvas = canvas;
+
+			let image = new Image('./img/coin.png', new Rectangle(Point.ZERO, 48, 48));
+			let rect = new Rectangle(Point.ZERO, 48, 48).fill(new Color('green'));
+
+			let topLeft = new Point(0, -100),
+				topRight = new Point(canvas.width, -100);
+
+			let line = new Line(topLeft, topRight);
+			let emitter = new LineEmitter(line, image, 100, 500);
+
+			emitter.range(height * 1.5).velocity(0.0, Math.PI / 2, Math.PI / 20).acceleration(9.8 * 100).angle(0, Math.PI * 2).angularVelocity(0, 0.1);
+
+			canvas.update((ctx, delta) => {
+				emitter.update(delta);
+			}).draw((ctx) => {
+				emitter.draw(ctx);
+			}).start();
+
+			let timeout;
+
+			window.addEventListener('resize', () => {
+				clearTimeout(timeout);
+
+				timeout = setTimeout(function () {
+					width = document.documentElement.clientWidth;
+					height = document.documentElement.clientHeight;
+
+					canvas.width = width;
+					canvas.height = height;
+
+					topRight.x = width;
+				}, 100);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Particle Engine</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<style media="screen">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				background: hsl(0, 0%, 95%);
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			import Canvas2D from '../js/canvas2d.js';
+
+			import Color from '../js/types/color.js';
+			import Point from '../js/types/point.js';
+			import Transform from '../js/types/transform.js';
+
+			import {PointEmitter} from '../js/physics/emitter.js';
+			import Particle from '../js/physics/particle.js';
+
+			import Polygon from '../js/drawables/polygon.js';
+
+			let width = document.documentElement.clientWidth,
+				height = document.documentElement.clientHeight,
+				diagonal = Math.sqrt(width * width + height * height);
+
+			let canvas = new Canvas2D(width, height, new Color('midnightblue')),
+				ctx = canvas.ctx;
+
+			let scale = Transform.asAnimatable(1),
+				transform = new Transform().scale(scale);
+
+			let pentagon = new Polygon(Point.ZERO, 5, 5).fill(new Color('white')).transform(transform);
+
+			let emitter = new PointEmitter(canvas.center, pentagon, 5, 500).range(diagonal).particleOnUpdate((particle) => {
+				let factor = diagonal / 3,
+					dist = particle.position.distanceFrom(canvas.center);
+
+				scale.value = dist / factor;
+			});
+
+			emitter.velocity(0.0, 0, Math.PI * 2).acceleration(0.1).angle(0, Math.PI * 2);
+
+			canvas.update((ctx, delta) => {
+				emitter.update();
+			}).draw((ctx) => {
+				emitter.draw(ctx);
+			}).start();
+		</script>
+	</body>
+</html>
