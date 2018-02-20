@@ -10,7 +10,7 @@ export default class extends PathDrawable
 	{
 		super();
 
-		this.position = center;
+		this._position = center;
 		this.radiusX = radiusX;
 		this.radiusY = radiusY;
 		this.rotation = rotation;
@@ -18,6 +18,6 @@ export default class extends PathDrawable
 
 	drawPath(ctx)
 	{
-		ctx.ellipse(this.position.x, this.position.y, this.radiusX, this.radiusY, this.rotation, Math.PI * 2, 0);
+		ctx.ellipse(this._position.x, this._position.y, this.radiusX, this.radiusY, this.rotation, Math.PI * 2, 0);
 	}
 }

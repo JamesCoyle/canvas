@@ -15,6 +15,7 @@
 
 			import Color from '../js/types/color.js';
 			import Transform from '../js/types/transform.js';
+			import Property from '../js/types/property.js';
 
 			import Polygon from '../js/drawables/polygon.js';
 			import Circle from '../js/drawables/circle.js';
@@ -22,9 +23,9 @@
 			let canvas = new Canvas2D(200, 200);
 			let ctx = canvas.ctx;
 
-			let hoursAngle = Transform.asAnimatable(0),
-				minsAngle = Transform.asAnimatable(0),
-				secsAngle = Transform.asAnimatable(0);
+			let hoursAngle = new Property(0),
+				minsAngle = new Property(0),
+				secsAngle = new Property(0);
 
 			let sharedPostition = new Transform().rotate(Math.PI).translateY(50);
 			let hTransform = new Transform().rotate(hoursAngle).add(sharedPostition);

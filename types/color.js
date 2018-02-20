@@ -2,7 +2,7 @@ export default class Color
 {
 	static from(color)
 	{
-		return Color.fromHSL(color.hue, color.saturation, color.luminosity, color.alpha);
+		return Color.fromHSL(color.hue, color.saturation, color.lightness, color.alpha);
 	}
 
 	static fromRGB(r, g, b, a = 1)
@@ -15,34 +15,69 @@ export default class Color
 		return new Color(`hsla(${h}, ${s * 100}%, ${l * 100}%, ${a})`);
 	}
 
-	static get Default()
+	static get DEFAULT()
 	{
 		return new Color('rgba(0, 0, 0, 0)');
 	}
 
 	get rgb()
 	{
-		return `rgb(${this.red}, ${this.green}, ${this.blue})`;
+		return `rgb(${this._red}, ${this._green}, ${this._blue})`;
 	}
 
 	get rgba()
 	{
-		return `rgba(${this.red}, ${this.green}, ${this.blue}, ${this.alpha})`;
+		return `rgba(${this._red}, ${this._green}, ${this._blue}, ${this._alpha})`;
 	}
 
 	get hsl()
 	{
-		return `hsl(${this.hue}, ${this.saturation * 100}%, ${this.luminosity * 100}%)`;
+		return `hsl(${this._hue}, ${this._saturation * 100}%, ${this._lightness * 100}%)`;
 	}
 
 	get hsla()
 	{
-		return `hsla(${this.hue}, ${this.saturation * 100}%, ${this.luminosity * 100}%, ${this.alpha})`;
+		return `hsla(${this._hue}, ${this._saturation * 100}%, ${this._lightness * 100}%, ${this._alpha})`;
 	}
 
 	get hex()
 	{
-		return `#${this.red.toString(16)}${this.green.toString(16)}${this.blue.toString(16)}`;
+		return `#${this._red.toString(16)}${this._green.toString(16)}${this._blue.toString(16)}`;
+	}
+
+	get hue()
+	{
+		return this._hue;
+	}
+
+	get saturation()
+	{
+		return this._saturation;
+	}
+
+	get lightness()
+	{
+		return this._lightness;
+	}
+
+	get red()
+	{
+		return this._red;
+	}
+
+	get green()
+	{
+		return this._green;
+	}
+
+	get blue()
+	{
+		return this._blue;
+	}
+
+	get alpha()
+	{
+		return this._alpha;
 	}
 
 	constructor(string)
@@ -52,8 +87,8 @@ export default class Color
 		let color = getComputedStyle(document.head).color.match(/\d+/g);
 
 		// store returned rgb value
-		[this.red, this.green, this.blue] = color;
-		this.alpha = (typeof color[3] !== 'undefined') ? color[3] : 1;
+		[this._red, this._green, this._blue] = color;
+		this._alpha = (typeof color[3] !== 'undefined') ? color[3] : 1;
 
 		// store the hsl value too
 		this._rgb2hsl();
@@ -63,7 +98,7 @@ export default class Color
 
 	rotate(angle)
 	{
-		this.hue += angle;
+		this._hue += angle;
 		this._hsl2rgb();
 
 		return this;
@@ -71,8 +106,17 @@ export default class Color
 
 	complimentary()
 	{
-		this.hue += 180;
-		this.hue %= 360;
+		this._hue += 180;
+		this._hue %= 360;
+		this._hsl2rgb();
+
+		return this;
+	}
+
+	setHue(value)
+	{
+		this._hue = value;
+		this._hue %= 360;
 		this._hsl2rgb();
 
 		return this;
@@ -82,7 +126,7 @@ export default class Color
 
 	saturate(amount)
 	{
-		this.saturation += amount;
+		this._saturation += amount;
 		this._hsl2rgb();
 
 		return this;
@@ -90,7 +134,7 @@ export default class Color
 
 	desaturate(amount)
 	{
-		this.saturation -= amount;
+		this._saturation -= amount;
 		this._hsl2rgb();
 
 		return this;
@@ -98,17 +142,25 @@ export default class Color
 
 	grayscale()
 	{
-		this.saturation = 0;
+		this._saturation = 0;
 		this._hsl2rgb();
 
 		return this;
 	}
 
-	/* === luminosity changes === */
+	setSaturation(value)
+	{
+		this._saturation = value;
+		this._hsl2rgb();
+
+		return this;
+	}
+
+	/* === lightness changes === */
 
 	lighten(amount)
 	{
-		this.luminosity += amount;
+		this._lightness += amount;
 		this._hsl2rgb();
 
 		return this;
@@ -116,7 +168,7 @@ export default class Color
 
 	darken(amount)
 	{
-		this.luminosity -= amount;
+		this._lightness -= amount;
 		this._hsl2rgb();
 
 		return this;
@@ -124,7 +176,15 @@ export default class Color
 
 	invert()
 	{
-		this.luminosity = 1 - this.luminosity;
+		this._lightness = 1 - this._lightness;
+		this._hsl2rgb();
+
+		return this;
+	}
+
+	setLightness(value)
+	{
+		this._lightness = value;
 		this._hsl2rgb();
 
 		return this;
@@ -134,14 +194,71 @@ export default class Color
 
 	transparentize(amount)
 	{
-		this.alpha -= amount;
+		this._alpha -= amount;
 
 		return this;
 	}
 
 	opacify(amount)
 	{
-		this.alpha += amount;
+		this._alpha += amount;
+
+		return this;
+	}
+
+	setAlpha(value)
+	{
+		this._alpha = value;
+
+		return this;
+	}
+
+	/* === color changes === */
+
+	redShift(amount)
+	{
+		this._red += amount;
+		this._rgb2hsl();
+
+		return this;
+	}
+
+	setRed(value)
+	{
+		this._red = value;
+		this._rgb2hsl();
+
+		return this;
+	}
+
+	greenShift(amount)
+	{
+		this._green += amount;
+		this._rgb2hsl();
+
+		return this;
+	}
+
+	setGreen(value)
+	{
+		this._green = value;
+		this._rgb2hsl();
+
+		return this;
+	}
+
+	blueShift(amount)
+	{
+		this._blue += amount;
+		this._rgb2hsl();
+
+		return this;
+	}
+
+	setBlue(value)
+	{
+		this._blue = value;
+		this._rgb2hsl();
 
 		return this;
 	}
@@ -150,9 +267,9 @@ export default class Color
 
 	_rgb2hsl()
 	{
-		let r = this.red / 255,
-			g = this.green / 255,
-			b = this.blue / 255,
+		let r = this._red / 255,
+			g = this._green / 255,
+			b = this._blue / 255,
 			max = Math.max(r, g, b),
 			min = Math.min(r, g, b),
 			h,
@@ -182,17 +299,17 @@ export default class Color
 			h /= 6;
 		}
 
-		this.hue = h * 360;
-		this.saturation = s;
-		this.luminosity = l;
+		this._hue = h * 360;
+		this._saturation = s;
+		this._lightness = l;
 	}
 
 	_hsl2rgb()
 	{
 		let r, g, b,
-			h = this.hue / 360,
-			s = this.saturation,
-			l = this.luminosity;
+			h = this._hue / 360,
+			s = this._saturation,
+			l = this._lightness;
 
 		if (s == 0)
 		{
@@ -217,8 +334,8 @@ export default class Color
 			b = hue2rgb(p, q, h - 1 / 3);
 		}
 
-		this.red = Math.round(r * 255);
-		this.green = Math.round(g * 255);
-		this.blue = Math.round(b * 255);
+		this._red = Math.round(r * 255);
+		this._green = Math.round(g * 255);
+		this._blue = Math.round(b * 255);
 	}
 }

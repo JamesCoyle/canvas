@@ -5,7 +5,7 @@ class Drawable
 {
 	get center()
 	{
-		return Point.from(this.position);
+		return Point.from(this._position);
 	}
 
 	constructor()
@@ -17,22 +17,29 @@ class Drawable
 
 	move(vector)
 	{
-		this.position.add(vector);
+		this._position.add(vector);
 
 		return this;
 	}
 
-	fill(fill)
+	fill(color)
 	{
-		this._fill = fill;
+		if (color instanceof Color)
+			this._fill = color;
+		else
+			this._fill = new Color(color);
 
 		return this;
 	}
 
-	stroke(stroke, strokeWidth)
+	stroke(color, width)
 	{
-		this._stroke = stroke;
-		this._strokeWidth = strokeWidth;
+		if (color instanceof Color)
+			this._stroke = color;
+		else
+			this._stroke = new Color(color);
+
+		this._strokeWidth = width;
 
 		return this;
 	}

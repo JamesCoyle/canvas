@@ -12,6 +12,6 @@ export default class extends Ellipse
 
 	drawPath(ctx)
 	{
-		ctx.ellipse(this.position.x, this.position.y, this.radiusX, this.radiusY, this.rotation, this.sectorOffset, this.sector);
+		ctx.ellipse(this._position.x, this._position.y, this.radiusX, this.radiusY, this.rotation, this.sectorOffset, this.sector);
 	}
 }

@@ -1,6 +1,4 @@
-import Point from './point.js';
-
-export default class Vector extends Point
+export default class Vector
 {
 	static get ZERO()
 	{
@@ -20,5 +18,30 @@ export default class Vector extends Point
 	get angle()
 	{
 		return Math.atan2(this.y, this.x);
+	}
+
+	constructor(x, y)
+	{
+		this.x = x;
+		this.y = y;
+
+		if (typeof this.x === 'undefined') this.x = 0;
+		if (typeof this.y === 'undefined') this.y = 0;
+	}
+
+	add(vector, scale = 1)
+	{
+		this.x += vector.x * scale;
+		this.y += vector.y * scale;
+
+		return this;
+	}
+
+	scale(scale)
+	{
+		this.x *= scale;
+		this.y *= scale;
+
+		return this;
 	}
 }

@@ -10,7 +10,7 @@ export default class Polygon extends PathDrawable
 	{
 		super();
 
-		this.position = center;
+		this._position = center;
 		this.radius = radius;
 		this.verteces = verteces;
 		this.rotation = rotation;

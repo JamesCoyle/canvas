@@ -27,15 +27,6 @@ export default class Point
 		return this;
 	}
 
-	moveTo(point)
-	{
-
-		this.x = point.x;
-		this.y = point.y;
-
-		return this;
-	}
-
 	distanceFrom(point)
 	{
 		return Math.sqrt(Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2));

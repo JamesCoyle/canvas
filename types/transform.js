@@ -1,34 +1,27 @@
 export default class Transform
 {
-	static asAnimatable(value)
-	{
-		return {
-			value: value
-		};
-	}
-
 	constructor()
 	{
-		this.queue = [];
+		this._queue = [];
 	}
 
 	add(transform)
 	{
-		this.queue = this.queue.concat(transform.queue);
+		this._queue = this._queue.concat(transform._queue);
 
 		return this;
 	}
 
 	rotate(angle)
 	{
-		this.queue.push(new Rotate(angle));
+		this._queue.push(new Rotate(angle));
 
 		return this;
 	}
 
 	translate(x, y)
 	{
-		this.queue.push(new Translate(x, y));
+		this._queue.push(new Translate(x, y));
 
 		return this;
 	}
@@ -62,7 +55,7 @@ export default class Transform
 		if (typeof y === 'undefined')
 			y = x;
 
-		this.queue.push(new Scale(x, y));
+		this._queue.push(new Scale(x, y));
 
 		return this;
 
@@ -86,7 +79,7 @@ export default class Transform
 
 	applyTo(ctx)
 	{
-		this.queue.forEach((transform) =>
+		this._queue.forEach((transform) =>
 		{
 			transform.applyTo(ctx);
 		});

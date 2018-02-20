@@ -12,6 +12,6 @@ export default class extends CircularSegment
 
 	drawPath(ctx)
 	{
-		ctx.arc(this.postition.x, this.postition.y, this.radius, this.rotation, this.angle);
+		ctx.arc(this._position.x, this._position.y, this.radius, this.rotation, this.angle);
 	}
 }

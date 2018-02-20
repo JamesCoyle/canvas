@@ -5,6 +5,6 @@ export default class extends EllipticalSegment
 	drawPath(ctx)
 	{
 		super.drawPath(ctx);
-		ctx.lineTo(this.position.x, this.position.y);
+		ctx.lineTo(this._position.x, this._position.y);
 	}
 }

@@ -10,7 +10,7 @@ export default class extends PathDrawable
 	{
 		super();
 
-		this.position = center;
+		this._position = center;
 		this.radius = radius;
 	}
 

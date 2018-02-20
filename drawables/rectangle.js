@@ -35,14 +35,14 @@ export default class Rectangle extends PathDrawable
 
 	get center()
 	{
-		return Point.from(this.position).add(this.offset);
+		return Point.from(this._position).add(this.offset);
 	}
 
 	constructor(center, width, height, rotation = 0, offset = Vector.ZERO)
 	{
 		super();
 
-		this.position = center;
+		this._position = center;
 		this.width = width;
 		this.height = height;
 		this.rotation = rotation;

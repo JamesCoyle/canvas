@@ -33,14 +33,14 @@ export default class Square extends PathDrawable
 
 	get center()
 	{
-		return this.position.add(this.offset);
+		return Point.from(this._position).add(this.offset);
 	}
 
 	constructor(position, size, rotation = 0, offset = Vector.ZERO)
 	{
 		super();
 
-		this.position = position;
+		this._position = position;
 		this.size = size;
 		this.rotation = rotation;
 		this.offset = offset;

@@ -16,14 +16,14 @@ export default class extends TextDrawable
 	{
 		super();
 
-		this.position = position;
+		this._position = position;
 		this.text = text;
 	}
 
 	drawText(ctx)
 	{
-		ctx.fillText(this.text, this.position.x, this.position.y);
-		ctx.strokeText(this.text, this.position.x, this.position.y);
+		ctx.fillText(this.text, this._position.x, this._position.y);
+		ctx.strokeText(this.text, this._position.x, this._position.y);
 	}
 }
 

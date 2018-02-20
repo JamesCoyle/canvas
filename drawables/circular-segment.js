@@ -12,6 +12,6 @@ export default class extends Circle
 
 	drawPath(ctx)
 	{
-		ctx.arc(this.position.x, this.position.y, this.radius, this.rotation, this.angle);
+		ctx.arc(this._position.x, this._position.y, this.radius, this.rotation, this.angle);
 	}
 }
