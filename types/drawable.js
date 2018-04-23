@@ -10,8 +10,8 @@ class Drawable
 
 	constructor()
 	{
-		this._fill = Color.Default;
-		this._stroke = Color.Default;
+		this._fill = Color.DEFAULT;
+		this._stroke = Color.DEFAULT;
 		this._strokeWidth = 0;
 	}
 
